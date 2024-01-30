@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拆柜明细表</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* height: 100vh; */
+            width: 100%;
+            margin: 0;
+        }
+
+        form {
+            margin-top: 2rem;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 800px;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .column {
+            flex: 1; /* 每个column占据等量的空间 */
+            margin-right: 10px; /* 可以根据需要调整间距 */
+        }
+
+        .column:last-child {
+            margin-right: 0; /* 最后一个column不需要右边距 */
+        }
+
+    </style>
+</head>
+
+<body>
+    <form id="pdfForm">
+        <h2>PDF Generator</h2>
+        <div>
+            <label for="containerNumber">柜号:</label>
+            <input type="text" id="containerNumber" name="containerNumber" required>
+        </div>
+        <div class="row">
+            <div class="column">
+                <label for="destinationNumbers">仓号 (用换行分隔):</label>
+                <textarea style="height: 200px;" id="destinationNumbers" name="destinationNumbers" required></textarea>
+                <span style="color: #777373;">No more than 10 destinations once</span>
+            </div>
+            <div class="column">
+                <label for="pageNumbers">仓号对应张数 (用换行分隔):</label>
+                <textarea style="height: 200px;" id="pageNumbers" name="pageNumbers" required></textarea>
+                <span style="color: #777373;">No more than 10 pageNumbers once</span>
+            </div>
+        </div>
+        
+        <div>
+            <label for="customerName">客户名:</label>
+            <input type="text" id="customerName" name="customerName" required>
+        </div>
+        <div>
+            <label for="date">日期:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <button type="submit">生成PDF</button>
+    </form>
+
+    <script src="pdf-generator.js"></script>
+</body>
+
+</html>
