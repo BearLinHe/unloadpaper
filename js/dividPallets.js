@@ -1,27 +1,69 @@
+// function allocateContainers(containers, perPallet) {
+//     let groups = []; // 存储每组的板数
+//     let containerSplits = {}; // 记录每个容器的拆分次数
+
+//     // 初始化容器拆分次数
+//     Object.keys(containers).forEach(container => {
+//         containerSplits[container] = 0;
+//     });
+
+//     // 尝试为每个容器分配板数
+//     Object.entries(containers).forEach(([container, boards]) => {
+//         while (boards > 0) {
+//             let allocated = false;
+
+//             // 优先填充未满的组
+//             for (let group of groups) {
+//                 let spaceLeft = perPallet - group.total;
+//                 if (spaceLeft > 0 && containerSplits[container] < 3) {
+//                     let boardsToAdd = Math.min(boards, spaceLeft);
+//                     group.total += boardsToAdd;
+//                     group.details.push({ container, boards: boardsToAdd });
+//                     boards -= boardsToAdd;
+//                     allocated = true;
+//                     containerSplits[container] += boardsToAdd > 0 ? 1 : 0;
+//                     break;
+//                 }
+//             }
+
+//             // 如果当前容器未能分配到任何现有组，创建新的组
+//             if (!allocated) {
+//                 let boardsToAdd = Math.min(boards, perPallet);
+//                 groups.push({ total: boardsToAdd, details: [{ container, boards: boardsToAdd }] });
+//                 boards -= boardsToAdd;
+//                 containerSplits[container] += boardsToAdd > 0 ? 1 : 0;
+//             }
+//         }
+//     });
+
+//     return groups;
+// }
+
+
 function allocateContainers(containers, perPallet) {
     let groups = []; // 存储每组的板数
-    let containerSplits = {}; // 记录每个容器的拆分次数
+    let containerSplits = new Map(); // 使用Map记录每个容器的拆分次数
 
     // 初始化容器拆分次数
-    Object.keys(containers).forEach(container => {
-        containerSplits[container] = 0;
+    containers.forEach((_, container) => {
+        containerSplits.set(container, 0);
     });
 
     // 尝试为每个容器分配板数
-    Object.entries(containers).forEach(([container, boards]) => {
+    containers.forEach((boards, container) => {
         while (boards > 0) {
             let allocated = false;
 
             // 优先填充未满的组
             for (let group of groups) {
                 let spaceLeft = perPallet - group.total;
-                if (spaceLeft > 0 && containerSplits[container] < 3) {
+                if (spaceLeft > 0 && containerSplits.get(container) < 3) {
                     let boardsToAdd = Math.min(boards, spaceLeft);
                     group.total += boardsToAdd;
                     group.details.push({ container, boards: boardsToAdd });
                     boards -= boardsToAdd;
                     allocated = true;
-                    containerSplits[container] += boardsToAdd > 0 ? 1 : 0;
+                    containerSplits.set(container, containerSplits.get(container) + (boardsToAdd > 0 ? 1 : 0));
                     break;
                 }
             }
@@ -31,7 +73,7 @@ function allocateContainers(containers, perPallet) {
                 let boardsToAdd = Math.min(boards, perPallet);
                 groups.push({ total: boardsToAdd, details: [{ container, boards: boardsToAdd }] });
                 boards -= boardsToAdd;
-                containerSplits[container] += boardsToAdd > 0 ? 1 : 0;
+                containerSplits.set(container, containerSplits.get(container) + (boardsToAdd > 0 ? 1 : 0));
             }
         }
     });
@@ -49,12 +91,21 @@ function calculateBoards(perPallet) {
     console.log(`boardNumbers: ${boardNumbers}`);
 
 
-    let containers = {};
+    // let containers = {};
+    // containerNumbers.forEach((container, index) => {
+    //     containers[container] = parseInt(boardNumbers[index], 10);
+    // });
+
+
+    // console.log(containers);
+
+
+    let containers = new Map();
     containerNumbers.forEach((container, index) => {
-        containers[container] = parseInt(boardNumbers[index], 10);
+        containers.set(container, parseInt(boardNumbers[index], 10));
     });
 
-
+    // 现在，containers是一个Map对象
     console.log(containers);
     // 调用算法函数
     let groups = allocateContainers(containers, perPallet);
