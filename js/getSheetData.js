@@ -1,24 +1,48 @@
 let globalSheetData = [];
+
+// 获取按钮
+const oakButton = document.getElementById('loadOakData');
+const laButton = document.getElementById('loadLaData');
 document.addEventListener('DOMContentLoaded', function () {
 
     // 添加事件监听器
     document.getElementById('warehouseSelector').addEventListener('change', filterData);
     document.getElementById('etaStartDatePicker').addEventListener('change', filterData);
     document.getElementById('etaEndDatePicker').addEventListener('change', filterData);
+    document.getElementById('unloadStartDatePicker').addEventListener('change', filterData);
+    document.getElementById('unloadEndDatePicker').addEventListener('change', filterData);
+
+
 
     // 初始化页面数据
-    fetchGoogleSheetData();
+    fetchGoogleSheetData(oakUrl);
 
 });
 
+
+// 为OAK按钮添加事件监听器
+oakButton.addEventListener('click', function () {
+    toggleActiveState(oakButton, laButton, '奥克兰拆柜信息'); // 切换按钮的激活状态
+    fetchGoogleSheetData(oakUrl); // 加载OAK地点的数据
+});
+
+// 为LA按钮添加事件监听器
+laButton.addEventListener('click', function () {
+    toggleActiveState(laButton, oakButton, '洛杉矶拆柜信息'); // 切换按钮的激活状态
+    fetchGoogleSheetData(laUrl); // 加载LA地点的数据
+});
+
+
 //从google_sheet获取数据
-const endpointUrl = 'https://script.google.com/macros/s/AKfycbyrAdT_SkCI7o6DCKrwzRf7asPUpjMbAzso8lYZvgTpYbwsJgoHdXRLsblMMmG4CU4/exec'; // 替换为你的Apps Script Web应用URL
-async function fetchGoogleSheetData() {
+const oakUrl = 'https://script.google.com/macros/s/AKfycbyrAdT_SkCI7o6DCKrwzRf7asPUpjMbAzso8lYZvgTpYbwsJgoHdXRLsblMMmG4CU4/exec'; // 替换为你的Apps Script Web应用URL
+const laUrl = 'https://script.google.com/macros/s/AKfycbzQPKNZx1JcbhfBYlTKiBaI49s1KJAk3007KJPbQV7JjVUsVOijPqzCWMCn5HxIthVJ/exec'
+
+async function fetchGoogleSheetData(url) {
     try {
         // 显示加载指示器
         document.getElementById('loadingIndicator').style.display = 'block';
 
-        const response = await fetch(endpointUrl);
+        const response = await fetch(url);
         const { data } = await response.json(); // 从Google Sheets获取数据
 
 
@@ -53,6 +77,7 @@ function displayData(data) {
             <td style="vertical-align: middle;">${container.container}</td>
             <td style="vertical-align: middle;">${container.客户}</td>
             <td style="vertical-align: middle;">${container.eta日期.substr(0, 10)}</td>
+            <td style="vertical-align: middle;">${container.拆柜日期.substr(0, 10)}</td>
             <td style="vertical-align: middle;">
                 <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseDetails_${index}" aria-expanded="true" aria-controls="collapseDetails_${index}">Detail</button>
             </td>`;
@@ -146,6 +171,8 @@ function filterData() {
     const warehouseValue = document.getElementById('warehouseSelector').value;
     const etaStartDateValue = document.getElementById('etaStartDatePicker').value;
     const etaEndDateValue = document.getElementById('etaEndDatePicker').value;
+    const unloadStartDateValue = document.getElementById('unloadStartDatePicker').value;
+    const unloadEndDateValue = document.getElementById('unloadEndDatePicker').value;
     let filteredData = globalSheetData;
 
     // 如果选定了仓号，筛选包含该仓号的数据
@@ -187,6 +214,27 @@ function filterData() {
         filteredData.sort((a, b) => new Date(a.eta日期.substr(0, 10)) - new Date(b.eta日期.substr(0, 10)));
     }
 
+
+
+    // 如果选定了拆柜日期，筛选从今天到所选日期之间的数据
+    if (unloadStartDateValue || unloadEndDateValue) {
+
+        const selectedUnloadStartDate = new Date(unloadStartDateValue);
+
+        const selectedUnloadEndDate = new Date(unloadEndDateValue);
+
+        console.log(`date: ${selectedUnloadStartDate} and ${selectedUnloadEndDate}`);
+
+
+        filteredData = filteredData.filter(container => {
+            const unloadDate = new Date(container.拆柜日期.substr(0, 10));
+            // 确保ETA日期在今天和所选日期之间
+            return unloadDate >= selectedUnloadStartDate && unloadDate < selectedUnloadEndDate;
+        });
+
+        // 根据ETA日期排序，最近的日期在前
+        filteredData.sort((a, b) => new Date(a.拆柜日期.substr(0, 10)) - new Date(b.拆柜日期.substr(0, 10)));
+    }
     displayData(filteredData); // 更新表格显示
 }
 
@@ -287,4 +335,17 @@ function displayResults(groups) {
     });
 
     resultsElement.innerHTML = htmlContent;
+}
+
+// 定义一个函数，用于切换按钮的激活状态并更新标题
+function toggleActiveState(selectedButton, otherButton, titleText) {
+    // 切换按钮的激活状态
+    selectedButton.classList.remove('btn-outline-primary');
+    selectedButton.classList.add('btn-primary');
+    otherButton.classList.add('btn-outline-primary');
+    otherButton.classList.remove('btn-primary');
+
+    // 更新标题
+    const titleElement = document.getElementById('datafromLocation');
+    titleElement.textContent = titleText;
 }

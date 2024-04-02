@@ -12,6 +12,11 @@ document.getElementById('linkBoardCalculator').addEventListener('click', functio
     loadContent('../html/boardCalculator.html');
 });
 
+document.getElementById('linkunloadingPaper').addEventListener('click', function (e) {
+    e.preventDefault();
+    loadContent('../html/unloadingPaper.html');
+});
+
 function loadContent(page) {
     document.getElementById('content').innerHTML = '<object type="text/html" data="' + page + '" style="width:100%; height:100%;" ></object>';
 }
