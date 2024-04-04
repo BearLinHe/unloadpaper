@@ -1,22 +1,39 @@
 let globalSheetData = [];
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化页面，显示所有数据
-    fetchGoogleSheetData();
+    fetchGoogleSheetData(oakUrl);
 
     // 搜索框输入事件监听器
     document.getElementById('searchInput').addEventListener('input', searchData);
 });
 
+
+// 获取按钮
+const oakButton = document.getElementById('loadOakData');
+const laButton = document.getElementById('loadLaData');
+
+// 为OAK按钮添加事件监听器
+oakButton.addEventListener('click', function () {
+    toggleActiveState(oakButton, laButton, '奥克兰拆柜信息'); // 切换按钮的激活状态
+    fetchGoogleSheetData(oakUrl); // 加载OAK地点的数据
+});
+
+// 为LA按钮添加事件监听器
+laButton.addEventListener('click', function () {
+    toggleActiveState(laButton, oakButton, '洛杉矶拆柜信息'); // 切换按钮的激活状态
+    fetchGoogleSheetData(laUrl); // 加载LA地点的数据
+});
+
 //从google_sheet获取数据
-const oakpointUrl = 'https://script.google.com/macros/s/AKfycbyrAdT_SkCI7o6DCKrwzRf7asPUpjMbAzso8lYZvgTpYbwsJgoHdXRLsblMMmG4CU4/exec'; // 替换为你的Apps Script Web应用URL
+const oakUrl = 'https://script.google.com/macros/s/AKfycbyrAdT_SkCI7o6DCKrwzRf7asPUpjMbAzso8lYZvgTpYbwsJgoHdXRLsblMMmG4CU4/exec'; // 替换为你的Apps Script Web应用URL
 const laUrl = 'https://script.google.com/macros/s/AKfycbzQPKNZx1JcbhfBYlTKiBaI49s1KJAk3007KJPbQV7JjVUsVOijPqzCWMCn5HxIthVJ/exec'
 
-async function fetchGoogleSheetData() {
+async function fetchGoogleSheetData(url) {
     try {
         // 显示加载指示器
         document.getElementById('loadingIndicator').style.display = 'block';
 
-        const response = await fetch(oakpointUrl);
+        const response = await fetch(url);
         const { data } = await response.json(); // 从Google Sheets获取数据
 
 
@@ -81,11 +98,12 @@ function displayData(data) {
                 if (unloadingPlace) {
                     collapseDetailContent +=
                         `<div class="detail-row">
-                        <p class="mb-2">
-                            <span class="me-3">${unloadingPlace}</span>
-                            <span class="me-3">${boardNumber}板</span> 
-                        </p>
-                    </div>`;
+                            <p class="mb-2 d-flex align-items-center">
+                                <span class="me-3">${unloadingPlace}</span>
+                                <span class="me-3">${boardNumber}板</span>
+                                <input type="number" class="form-control form-control-sm mx-2" style="width: 80px;" data-container="${container.container}" placeholder="${boardNumber}" />
+                            </p>
+                        </div>`;
 
                 }
             }
@@ -124,5 +142,18 @@ function filterByDate() {
     displayData(filteredData); // 显示筛选结果
 }
 
+
+// 定义一个函数，用于切换按钮的激活状态并更新标题
+function toggleActiveState(selectedButton, otherButton, titleText) {
+    // 切换按钮的激活状态
+    selectedButton.classList.remove('btn-outline-primary');
+    selectedButton.classList.add('btn-primary');
+    otherButton.classList.add('btn-outline-primary');
+    otherButton.classList.remove('btn-primary');
+
+    // 更新标题
+    const titleElement = document.getElementById('datafromLocation');
+    titleElement.textContent = titleText;
+}
 
 
