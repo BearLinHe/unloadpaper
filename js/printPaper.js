@@ -192,6 +192,7 @@ function formatContainerData(button) {
         }
 
         if (unloadingPlace) {
+            unloadingPlace = unloadingPlace.toString().trim();
             warehouses.push(`${unloadingPlace}`);
             boardNumber = boardNumber ? boardNumber : 0;
             palletNumbers.push(`${boardNumber}`);
