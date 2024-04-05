@@ -1,4 +1,5 @@
 let globalSheetData = [];
+let filteredData = [];
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化页面，显示所有数据
     fetchGoogleSheetData(oakUrl);
@@ -55,7 +56,7 @@ async function fetchGoogleSheetData(url) {
 function displayData(data) {
     var containerInfoBody = document.getElementById('containerInfoBody');
     containerInfoBody.innerHTML = ''; // 清空表格内容
-    const filteredData = data.filter(container => container.container);
+    filteredData = data.filter(container => container.container);
     console.log(filteredData);
     data.filter(container => container.container)
         .forEach((container, index) => {
@@ -67,7 +68,13 @@ function displayData(data) {
             <td style="vertical-align: middle;">${container.拆柜日期.substr(0, 10)}</td>
             <td style="vertical-align: middle;">
                 <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseDetails_${index}" aria-expanded="false" aria-controls="collapseDetails_${index}">Detail</button>
+            </td>
+            <td>
+                <button class="btn btn-warning" data-index="${index}" onclick="formatContainerData(this)">Print</button>
             </td>`;
+
+
+
             containerInfoBody.appendChild(row);
             // 折叠内容的构建
             var detailsRow = document.createElement('tr');
@@ -77,10 +84,9 @@ function displayData(data) {
                     <div class="card card-body bg-dark-subtle">`;
 
             // 遍历所有可能的卸货地和对应的板数或#
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 16; i++) {
                 let unloadingPlace = container[`卸货地${i}`]; // 当前卸货地
                 let boardNumber; // 用于存储当前卸货地的板数或#
-                let position = container[`position${i}`];
 
                 // 卸货地0使用"板数"，卸货地1使用"板数1"
                 if (i === 0) {
@@ -93,7 +99,7 @@ function displayData(data) {
                     boardNumber = container[`#${i - 2}`] || '';
                 }
 
-            
+
                 // 如果当前卸货地存在，则添加对应的详细内容
                 if (unloadingPlace) {
                     collapseDetailContent +=
@@ -123,7 +129,7 @@ function displayData(data) {
 function searchData() {
     var keyword = document.getElementById('searchInput').value.trim(); // 获取搜索关键词
     // 根据关键词过滤数据
-    const filteredData = globalSheetData.filter(item => {
+    filteredData = globalSheetData.filter(item => {
         const container = `${item.container}`; // 使用模板字符串确保container是字符串
         return keyword === '' || container.endsWith(keyword);
     });
@@ -134,7 +140,7 @@ function searchData() {
 function filterByDate() {
     const selectedDate = document.getElementById('dateFilter').value;
     // 根据选定的日期过滤数据
-    const filteredData = globalSheetData.filter(item => {
+    filteredData = globalSheetData.filter(item => {
         const itemDate = item.拆柜日期.substr(0, 10); // 假设拆柜日期格式为"YYYY-MM-DD"
         return selectedDate === '' || itemDate === selectedDate;
     });
@@ -157,3 +163,73 @@ function toggleActiveState(selectedButton, otherButton, titleText) {
 }
 
 
+const savingDataUrl = 'https://script.google.com/macros/s/AKfycbxcVB4d8PA184Loz7-9UMZ4AS9KtSKpvrJ5tqZlFD7fdUf5Uel33vnBtHUN63YNIc8r/exec';
+
+
+
+function formatContainerData(button) {
+    const index = button.getAttribute('data-index')
+    const container = filteredData[index];
+    console.log(container);
+    let warehouses = [];
+    let palletNumbers = [];
+    for (let i = 0; i < 16; i++) {
+        let unloadingPlace = container[`卸货地${i}`];
+        let boardNumber;
+
+
+        // 卸货地0使用"板数"，卸货地1使用"板数1"
+        if (i === 0) {
+            boardNumber = container["板数"] || '';
+        } else if (i === 1) {
+            boardNumber = container["板数1"] || '';
+        } else if (i === 2) {
+            boardNumber = container["#"] || '';
+        } else { // 卸货地3及之后使用 "#1", "#2", ...
+            boardNumber = container[`#${i - 2}`] || '';
+        }
+
+        if (unloadingPlace) {
+            warehouses.push(`${unloadingPlace}`);
+            boardNumber = boardNumber ? boardNumber : 0;
+            palletNumbers.push(`${boardNumber}`);
+        }
+    }
+    console.log(warehouses);
+    console.log(palletNumbers);
+
+    const formatData = {
+        containerNumber: container.container,
+        clientName: container.客户,
+        unloadingDate: container.拆柜日期.substr(0, 10),
+        warehouses: warehouses,
+        palletNumbers: palletNumbers
+    };
+
+
+    console.log(formatData);
+
+    data = formatData;
+
+    sendDataToGoogleSheet();
+
+    for (let i = 0; i < 16; i++) {
+        generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
+    }
+
+}
+
+var data = {}
+
+function sendDataToGoogleSheet() {
+
+    console.log(data);
+    fetch(savingDataUrl, {
+        method: 'POST',
+        contentType: 'application/json',
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+}

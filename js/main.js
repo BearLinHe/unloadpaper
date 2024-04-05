@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', (event) => {
-    loadContent('../html/pdfGenerator.html'); // 页面加载时自动加载 PDF 生成器
+    loadContent('../html/unloadingPaper.html'); // 页面加载时自动加载 PDF 生成器
 });
 
 document.getElementById('linkPdfGenerator').addEventListener('click', function (e) {
