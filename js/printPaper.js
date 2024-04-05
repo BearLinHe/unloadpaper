@@ -107,7 +107,7 @@ function displayData(data) {
                             <p class="mb-2 d-flex align-items-center">
                                 <span class="me-3">${unloadingPlace}</span>
                                 <span class="me-3">${boardNumber}板</span>
-                                <input type="number" class="form-control form-control-sm mx-2" style="width: 80px;" data-container="${container.container}" placeholder="${boardNumber}" />
+                                <input type="number" class="form-control form-control-sm mx-2 boardnumber-input" style="width: 80px;" data-container="${container.container}" data-boardnumber-index="${i}" placeholder="${boardNumber}" />
                             </p>
                         </div>`;
 
@@ -193,8 +193,10 @@ function formatContainerData(button) {
 
         if (unloadingPlace) {
             unloadingPlace = unloadingPlace.toString().trim();
+
+            const inputElement = document.querySelector(`input[data-container="${container.container}"][data-boardnumber-index="${i}"]`);
             warehouses.push(`${unloadingPlace}`);
-            boardNumber = boardNumber ? boardNumber : 0;
+            boardNumber = boardNumber ? boardNumber : inputElement.value;
             palletNumbers.push(`${boardNumber}`);
 
             // 判断仓号是否包含特定字符串
@@ -202,7 +204,7 @@ function formatContainerData(button) {
             palletHeights.push(isSpecialWarehouse ? `less than 72''` : `less than 75''`);
         }
 
-        
+
     }
     console.log(warehouses);
     console.log(palletNumbers);
