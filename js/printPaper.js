@@ -165,14 +165,16 @@ function toggleActiveState(selectedButton, otherButton, titleText) {
 
 const savingDataUrl = 'https://script.google.com/macros/s/AKfycbxcVB4d8PA184Loz7-9UMZ4AS9KtSKpvrJ5tqZlFD7fdUf5Uel33vnBtHUN63YNIc8r/exec';
 
-
-
 function formatContainerData(button) {
     const index = button.getAttribute('data-index')
     const container = filteredData[index];
     console.log(container);
     let warehouses = [];
     let palletNumbers = [];
+    let palletHeights = [];
+
+    const specialWarehouses = ["SCK1", "SCK4", "SMF3", "SMF6", "LAS1"];
+
     for (let i = 0; i < 16; i++) {
         let unloadingPlace = container[`卸货地${i}`];
         let boardNumber;
@@ -193,7 +195,13 @@ function formatContainerData(button) {
             warehouses.push(`${unloadingPlace}`);
             boardNumber = boardNumber ? boardNumber : 0;
             palletNumbers.push(`${boardNumber}`);
+
+            // 判断仓号是否包含特定字符串
+            let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
+            palletHeights.push(isSpecialWarehouse ? `less than 72''` : `less than 75''`);
         }
+
+        
     }
     console.log(warehouses);
     console.log(palletNumbers);
@@ -203,7 +211,8 @@ function formatContainerData(button) {
         clientName: container.客户,
         unloadingDate: container.拆柜日期.substr(0, 10),
         warehouses: warehouses,
-        palletNumbers: palletNumbers
+        palletNumbers: palletNumbers,
+        palletHeights: palletHeights
     };
 
 
