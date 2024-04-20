@@ -188,6 +188,10 @@ function formatContainerData(button) {
 
     const specialWarehouses = ["SCK1", "SCK4", "SMF3", "SMF6", "LAS1"];
 
+    // 尝试打开或复用Google Sheets文档窗口
+    const sheetWindowName = 'GoogleSheetDataWindow';
+    window.open('https://docs.google.com/spreadsheets/d/1p-lPEFgBeEfAOIpPDEcfnsu2MWj-x1ZCDkJD5_J6bxo/edit#gid=789142677', sheetWindowName);
+
     for (let i = 0; i < 25; i++) {
         let unloadingPlace = container[`卸货地${i}`];
         let boardNumber;
