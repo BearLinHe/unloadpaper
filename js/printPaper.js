@@ -63,7 +63,7 @@ function displayData(data) {
             var row = document.createElement('tr');
             row.innerHTML = `
             <th style="vertical-align: middle;" scope="row">${index}</th>
-            <td style="vertical-align: middle;">${container.container}</td>
+            <td id="container-${index}" style="vertical-align: middle;">${container.container}</td>
             <td style="vertical-align: middle;">${container.客户}</td>
             <td style="vertical-align: middle;">${container.拆柜日期.substr(0, 10)}</td>
             <td style="vertical-align: middle;">
@@ -77,6 +77,7 @@ function displayData(data) {
 
             containerInfoBody.appendChild(row);
             // 折叠内容的构建
+            let validUnloadingPlacesCount = 0;
             var detailsRow = document.createElement('tr');
             var collapseDetailContent = `
             <td colspan="4" class="p-0">
@@ -84,7 +85,7 @@ function displayData(data) {
                     <div class="card card-body bg-dark-subtle">`;
 
             // 遍历所有可能的卸货地和对应的板数或#
-            for (let i = 0; i < 16; i++) {
+            for (let i = 0; i < 25; i++) {
                 let unloadingPlace = container[`卸货地${i}`]; // 当前卸货地
                 let boardNumber; // 用于存储当前卸货地的板数或#
 
@@ -102,6 +103,7 @@ function displayData(data) {
 
                 // 如果当前卸货地存在，则添加对应的详细内容
                 if (unloadingPlace) {
+                    validUnloadingPlacesCount++;
                     collapseDetailContent +=
                         `<div class="detail-row">
                             <p class="mb-2 d-flex align-items-center">
@@ -113,7 +115,7 @@ function displayData(data) {
 
                 }
             }
-
+            
             collapseDetailContent += `
                     </div>
                 </div>
@@ -121,6 +123,16 @@ function displayData(data) {
 
             detailsRow.innerHTML = collapseDetailContent;
             containerInfoBody.appendChild(detailsRow);
+
+            // 使用之前创建的唯一ID来设置样式
+            let containerElement = document.getElementById(`container-${index}`);
+            if (validUnloadingPlacesCount <= 10) {
+                containerElement.style.color = 'black';  // 1-10个仓库，黑色
+            } else if (validUnloadingPlacesCount <= 16) {
+                containerElement.style.color = '#ffc107'; // 11-16个仓库，黄色
+            } else {
+                containerElement.style.color = '#8f2929';    // 17个以上，红色
+            }
         });
 }
 
@@ -173,9 +185,10 @@ function formatContainerData(button) {
     let palletNumbers = [];
     let palletHeights = [];
 
+
     const specialWarehouses = ["SCK1", "SCK4", "SMF3", "SMF6", "LAS1"];
 
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 25; i++) {
         let unloadingPlace = container[`卸货地${i}`];
         let boardNumber;
 
@@ -208,7 +221,6 @@ function formatContainerData(button) {
     }
     console.log(warehouses);
     console.log(palletNumbers);
-
     const formatData = {
         containerNumber: container.container,
         clientName: container.客户,
@@ -225,7 +237,7 @@ function formatContainerData(button) {
 
     sendDataToGoogleSheet();
 
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 25; i++) {
         generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
     }
 
