@@ -21,7 +21,7 @@ oakButton.addEventListener('click', function () {
 
 // 为LA按钮添加事件监听器
 laButton.addEventListener('click', function () {
-    toggleActiveState(laButton, oakButton, '洛杉矶拆柜信息'); // 切换按钮的激活状态
+    toggleActiveState(laButton, oakButton, '洛杉矶拆柜信息(red: 240; yellow: 230; black: 220)'); // 切换按钮的激活状态
     fetchGoogleSheetData(laUrl); // 加载LA地点的数据
 });
 
@@ -115,7 +115,7 @@ function displayData(data) {
 
                 }
             }
-            
+
             collapseDetailContent += `
                     </div>
                 </div>
@@ -128,8 +128,8 @@ function displayData(data) {
             let containerElement = document.getElementById(`container-${index}`);
             if (validUnloadingPlacesCount <= 10) {
                 containerElement.style.color = 'black';  // 1-10个仓库，黑色
-            } else if (validUnloadingPlacesCount <= 16) {
-                containerElement.style.color = '#ffc107'; // 11-16个仓库，黄色
+            } else if (validUnloadingPlacesCount <= 14) {
+                containerElement.style.color = '#ffc107'; // 11-14个仓库，黄色
             } else {
                 containerElement.style.color = '#8f2929';    // 17个以上，红色
             }
