@@ -184,9 +184,143 @@ function formatContainerData(button) {
     let warehouses = [];
     let palletNumbers = [];
     let palletHeights = [];
+    let destinations = [];
 
 
-    const specialWarehouses = ["SCK1", "SCK4", "SMF3", "SMF6", "LAS1"];
+    const specialWarehouses = [
+        "SCK1",
+        "SCK4",
+        "SMF3",
+        "SMF6",
+        "LAS1"
+    ];
+
+    const LAWarehouses = [
+        "GYR2",
+        "GYR3",
+        "KRB1",
+        "KRB4",
+        "KRB7",
+        "LAS1",
+        "LAS6",
+        "LAX9",
+        "LGB4",
+        "LGB6",
+        "LGB8",
+        "LGB9",
+        "ONT2",
+        "ONT6",
+        "ONT8",
+        "ONT9",
+        "PHX5",
+        "PHX7",
+        "QXY9",
+        "SBD1",
+        "SBD2",
+        "SBD3",
+        "SNA4",
+        "VGT2",
+        "XLX7",
+        "RNO4"];
+
+    const EastWarehouses = [
+        "AVP1",
+        "AVP3",
+        "ALB1",
+        "ACY2",
+        "ABE3",
+        "ABE4",
+        "ABE4",
+        "ABE8",
+        "ATL8",
+        "BWI4",
+        "CLT2",
+        "CLT3",
+        "DCA6",
+        "GSP1",
+        "GSO1",
+        "HGR2",
+        "JAX3",
+        "KRB2",
+        "MDT1",
+        "MCO2",
+        "MGE1",
+        "MGE3",
+        "MGE5",
+        "MGE7",
+        "PIT2",
+        "PHL5",
+        "PHL6",
+        "PHL7",
+        "RIC1",
+        "XLX1",
+        "SWF1",
+        "SAV3",
+        "TTN2",
+        "TPA2",
+        "TPA3",
+        "TPA6",
+        "TEB3",
+        "TBE4",
+        "TEB6",
+        "TEB9",
+        "SWF2",
+        "ORF2",
+    ];
+
+    const BayAreaWarehouses = [
+        "MCE1",
+        "OAK3",
+        "SCK1",
+        "SCK3",
+        "SCK4",
+        "SMF3",
+        "SMF6",
+        "FAT2",
+        "SJC7",
+    ];
+
+    const WendyWareHouses = [
+        "BNA2",
+        "BFI3",
+        "CHA2",
+        "CMH2",
+        "CMH3",
+        "DET1",
+        "DET2",
+        "DEN2",
+        "DFW6",
+        "FTW1",
+        "FTW3",
+        "FTW5",
+        "FTW9",
+        "FWA4",
+        "GEG2",
+        "HOU3",
+        "HOU8",
+        "IGQ2",
+        "ICT2",
+        "IAH3",
+        "IND9",
+        "FOE1",
+        "JVL1",
+        "LFT1",
+        "MEM1",
+        "MQJ1",
+        "MDW2",
+        "MKC4",
+        "ORD2",
+        "OKC2",
+        "PDX6",
+        "SAT1",
+        "SAT4",
+        "SLC2",
+        "SLC3",
+        "STL3",
+        "STL4",
+        "SLT4",
+        "SLT6"
+    ];
 
     // 尝试打开或复用Google Sheets文档窗口
     const sheetWindowName = 'GoogleSheetDataWindow';
@@ -216,22 +350,52 @@ function formatContainerData(button) {
             boardNumber = boardNumber ? boardNumber : inputElement.value;
             palletNumbers.push(`${boardNumber}`);
 
-            // 判断仓号是否包含特定字符串
-            let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
-            palletHeights.push(isSpecialWarehouse ? `less than 72''` : `less than 75''`);
+            // 先判断仓号是否为东部仓库
+            let isEastWarehouse = EastWarehouses.some(eastWarehouse => unloadingPlace.includes(eastWarehouse));
+            if (isEastWarehouse) {
+                palletHeights.push(`less than 100''`);
+            } else {
+                // 再判断仓号是否为特殊仓库
+                let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
+                if (isSpecialWarehouse) {
+                    palletHeights.push(`less than 72''`);
+                } else {
+                    palletHeights.push(`less than 75''`);
+                }
+            }
+
+            // 目的地判断
+            let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+            let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+            let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
+
+            if (isLA) {
+                destinations.push("LA");
+            } else if (isBayArea) {
+                destinations.push("湾区");
+            } else if (isEastWarehouse) {
+                destinations.push("美东");
+            } else if (isWendy) {
+                destinations.push("Wendy");
+            } else {
+                destinations.push("N/A");
+            }
+
         }
 
 
     }
     console.log(warehouses);
     console.log(palletNumbers);
+    console.log(destinations);
     const formatData = {
         containerNumber: container.container,
         clientName: container.客户,
         unloadingDate: container.拆柜日期.substr(0, 10),
         warehouses: warehouses,
         palletNumbers: palletNumbers,
-        palletHeights: palletHeights
+        palletHeights: palletHeights,
+        destinations: destinations
     };
 
 
@@ -241,9 +405,9 @@ function formatContainerData(button) {
 
     sendDataToGoogleSheet();
 
-    for (let i = 0; i < 25; i++) {
-        generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
-    }
+    // for (let i = 0; i < 25; i++) {
+    //     generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
+    // }
 
 }
 
