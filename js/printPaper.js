@@ -405,9 +405,9 @@ function formatContainerData(button) {
 
     sendDataToGoogleSheet();
 
-    // for (let i = 0; i < 25; i++) {
-    //     generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
-    // }
+    for (let i = 0; i < 25; i++) {
+        generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
+    }
 
 }
 
