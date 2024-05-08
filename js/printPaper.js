@@ -221,7 +221,9 @@ function formatContainerData(button) {
         "SNA4",
         "VGT2",
         "XLX7",
-        "RNO4"];
+        "RNO4",
+        "USFU",
+    ];
 
     const EastWarehouses = [
         "AVP1",
@@ -266,6 +268,7 @@ function formatContainerData(button) {
         "TEB9",
         "SWF2",
         "ORF2",
+        "RFD2",
     ];
 
     const BayAreaWarehouses = [
@@ -278,6 +281,7 @@ function formatContainerData(button) {
         "SMF6",
         "FAT2",
         "SJC7",
+        "SMF7",
     ];
 
     const WendyWareHouses = [
