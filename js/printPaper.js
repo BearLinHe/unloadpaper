@@ -269,6 +269,8 @@ function formatContainerData(button) {
         "SWF2",
         "ORF2",
         "RFD2",
+        "TEB4",
+        "RMN3",
     ];
 
     const BayAreaWarehouses = [
