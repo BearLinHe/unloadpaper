@@ -271,6 +271,8 @@ function formatContainerData(button) {
         "RFD2",
         "TEB4",
         "RMN3",
+        "ATL1",
+        "GS01",
     ];
 
     const BayAreaWarehouses = [
@@ -325,7 +327,8 @@ function formatContainerData(button) {
         "STL3",
         "STL4",
         "SLT4",
-        "SLT6"
+        "SLT6",
+        "LIT2",
     ];
 
     // 尝试打开或复用Google Sheets文档窗口
