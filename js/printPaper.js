@@ -274,6 +274,7 @@ function formatContainerData(button) {
         "ATL1",
         "GS01",
         "RDU2",
+        "XLX6",
     ];
 
     const BayAreaWarehouses = [
