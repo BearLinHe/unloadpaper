@@ -363,7 +363,7 @@ function formatContainerData(button) {
             // 先判断仓号是否为东部仓库
             let isEastWarehouse = EastWarehouses.some(eastWarehouse => unloadingPlace.includes(eastWarehouse));
             if (isEastWarehouse) {
-                palletHeights.push(`less than 100''`);
+                palletHeights.push(`less than 75''`);
             } else {
                 // 再判断仓号是否为特殊仓库
                 let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
