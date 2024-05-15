@@ -333,7 +333,7 @@ function formatContainerData(button) {
         "SLT6",
         "LIT2",
         "HSV1",
-        "MQJ2", BOS7
+        "MQJ2",
     ];
 
     // 尝试打开或复用Google Sheets文档窗口
