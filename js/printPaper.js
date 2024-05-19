@@ -337,6 +337,7 @@ function formatContainerData(button) {
         "MQJ2",
         "DFW2n",
         "RFD2",
+        "RFD1",
     ];
 
     // 尝试打开或复用Google Sheets文档窗口
