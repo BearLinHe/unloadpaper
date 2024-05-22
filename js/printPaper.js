@@ -1,5 +1,6 @@
 let globalSheetData = [];
 let filteredData = [];
+let currentLocation = 'OAK';
 document.addEventListener('DOMContentLoaded', function () {
     // 初始化页面，显示所有数据
     fetchGoogleSheetData(oakUrl);
@@ -16,12 +17,14 @@ const laButton = document.getElementById('loadLaData');
 // 为OAK按钮添加事件监听器
 oakButton.addEventListener('click', function () {
     toggleActiveState(oakButton, laButton, '奥克兰拆柜信息'); // 切换按钮的激活状态
+    currentLocation = 'OAK'
     fetchGoogleSheetData(oakUrl); // 加载OAK地点的数据
 });
 
 // 为LA按钮添加事件监听器
 laButton.addEventListener('click', function () {
     toggleActiveState(laButton, oakButton, '洛杉矶拆柜信息(red: 240; yellow: 230; black: 220)'); // 切换按钮的激活状态
+    currentLocation = 'LA'
     fetchGoogleSheetData(laUrl); // 加载LA地点的数据
 });
 
@@ -176,7 +179,7 @@ function toggleActiveState(selectedButton, otherButton, titleText) {
 
 
 const savingDataUrl = 'https://script.google.com/macros/s/AKfycbxcVB4d8PA184Loz7-9UMZ4AS9KtSKpvrJ5tqZlFD7fdUf5Uel33vnBtHUN63YNIc8r/exec';
-
+const savingLADataUrl = 'https://script.google.com/macros/s/AKfycbyqLavRz7ieA5mvfXNz660GYQ-G92dttVjCu4-X-eG33U8dQRhoNYnXXW70-N058scM/exec'
 function formatContainerData(button) {
     const index = button.getAttribute('data-index')
     const container = filteredData[index];
@@ -434,12 +437,24 @@ var data = {}
 function sendDataToGoogleSheet() {
 
     console.log(data);
-    fetch(savingDataUrl, {
-        method: 'POST',
-        contentType: 'application/json',
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
+    if (currentLocation === 'OAK') {
+        fetch(savingDataUrl, {
+            method: 'POST',
+            contentType: 'application/json',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    } else if (currentLocation === 'LA') {
+        fetch(savingLADataUrl, {
+            method: 'POST',
+            contentType: 'application/json',
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    }
+
 }
