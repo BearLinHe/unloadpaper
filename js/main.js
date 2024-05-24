@@ -20,3 +20,10 @@ document.getElementById('linkunloadingPaper').addEventListener('click', function
 function loadContent(page) {
     document.getElementById('content').innerHTML = '<object type="text/html" data="' + page + '" style="width:100%; height:100%;" ></object>';
 }
+
+
+function openNewWindow() {
+    var url = '../POD/View - Carrier Central.html'; // 确保路径正确
+    var windowFeatures = "height=600,width=800,left=100,top=100,location=no,scrollbars=yes,status=yes";
+    window.open(url, "_blank", windowFeatures);
+}

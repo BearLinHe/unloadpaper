@@ -1,0 +1,62 @@
+.view-format1 {
+    font-family: Amazon Ember;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.065px;
+    text-align: left;
+    color: #008296;
+}
+
+.view-format2 {
+    font-family: Amazon Ember;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0.065px;
+    text-align: left;
+    margin-bottom: 4px;
+
+    color: #667575;
+
+}
+
+.view-format3 {
+    font-family: Amazon Ember;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    letter-spacing: 0px;
+    text-align: left;
+
+    color: #002f36;
+
+}
+
+.view-format4 {
+    font-family: Amazon Ember;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0px;
+    text-align: left;
+
+    color: #002F36;
+
+}
+
+.view-format5 {
+    font-family: Amazon Ember;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+
+    color: #002F36;
+}
+
+.tooltip-icon {
+    transform: scale( 0.5 );
+    margin-top: -5px;
+}
