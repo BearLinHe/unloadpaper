@@ -58,7 +58,7 @@
 }
 
 .input-group textarea {
-    width: 200px;
+    /* width: 20%; */
     height: 400px;
     /* Fixed width for textarea */
 }

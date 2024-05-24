@@ -10,25 +10,36 @@ function closeModal() {
 
 function processInputs() {
     shipmentsData = [];
-    
+
     const FBA = document.getElementById('FBA').value.split('\n');
     const palletCounts = document.getElementById('palletCount').value.split('\n');
     const cartonCounts = document.getElementById('cartonCount').value.split('\n');
     const unitCounts = document.getElementById('unitCount').value.split('\n');
     const poLists = document.getElementById('poList').value.split('\n');
 
-   
+
+
+
     FBA.forEach((refNumber, index) => {
+
+        // 默认值设置为0，如果有输入值则转换为整数
+        const palletCountValue = palletCounts[index] ? parseInt(palletCounts[index]) : 0;
+        const cartonCountValue = cartonCounts[index] ? parseInt(cartonCounts[index]) : 0;
+
+        // unitCount 如果没有输入值，则随机生成一个整数，否则转换为整数
+        const unitCountValue = unitCounts[index] ? parseInt(unitCounts[index]) : Math.floor(Math.random() * 1000);
+
+
         shipmentsData.push({
             id: index + 1,
             ARN: '',
             refNumber: refNumber.trim(),
             bolNumber: '',
             vendorName: '',
-            palletCount: parseInt(palletCounts[index]),
-            cartonCount: parseInt(cartonCounts[index]),
-            unitCount: parseInt(unitCounts[index]),
-            poList: poLists[index].trim()
+            palletCount: palletCountValue,
+            cartonCount: cartonCountValue,
+            unitCount: unitCountValue,
+            poList: poLists[index].trim(),
         });
     });
 
@@ -51,7 +62,7 @@ function processInputs() {
 //     { id: 3, ARN: '', refNumber: 'FBA17QSXxcvw', bolNumber: '', vendorName: '', palletCount: 0, cartonCount: 100, unitCount: 699, poList: '6CEZ2IYC' },
 //     { id: 4, ARN: '', refNumber: 'FBA17QSXxcvw', bolNumber: '', vendorName: '', palletCount: 0, cartonCount: 100, unitCount: 699, poList: '6CEZ2IYC' },
 
-    
+
 //     // 更多数据...
 // ];
 

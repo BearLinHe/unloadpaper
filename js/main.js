@@ -24,6 +24,7 @@ function loadContent(page) {
 
 function openNewWindow() {
     var url = '../POD/View - Carrier Central.html'; // 确保路径正确
-    var windowFeatures = "height=600,width=800,left=100,top=100,location=no,scrollbars=yes,status=yes";
+    var windowFeatures = "width=" + screen.width + ",height=" + screen.height + ",left=0,top=0,location=no,scrollbars=yes,status=yes";
     window.open(url, "_blank", windowFeatures);
 }
+
