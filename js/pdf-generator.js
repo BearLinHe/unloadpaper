@@ -1,4 +1,3 @@
-
 document.getElementById('pdfForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -24,7 +23,14 @@ function generatePDF(containerNumber, destinationNumber, customerName, date, pag
 
     const pageWidth = pdf.internal.pageSize.width;
 
-    pdf.setFont("helvetica", "bold");
+    // const myFont = ''
+
+    pdf.addFileToVFS("MyFont.ttf", myFontBase64);
+    pdf.addFont("MyFont.ttf", "MyFont", "normal");
+    pdf.setFont("MyFont");
+
+
+    // pdf.setFont("helvetica", "bold");
 
     const firstLineText = containerNumber;
     pdf.setFontSize(100);
