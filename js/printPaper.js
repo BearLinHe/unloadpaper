@@ -20,6 +20,7 @@ oakButton.addEventListener('click', function () {
     toggleActiveState(oakButton, laButton, airButton, '奥克兰拆柜信息'); // 切换按钮的激活状态
     currentLocation = 'OAK'
     fetchGoogleSheetData(oakUrl); // 加载OAK地点的数据
+    console.log(currentLocation);
 });
 
 // 为LA按钮添加事件监听器
@@ -27,6 +28,7 @@ laButton.addEventListener('click', function () {
     toggleActiveState(laButton, oakButton, airButton, '洛杉矶拆柜信息(red: 240; yellow: 230; black: 220)'); // 切换按钮的激活状态
     currentLocation = 'LA'
     fetchGoogleSheetData(laUrl); // 加载LA地点的数据
+    console.log(currentLocation);
 });
 
 // 为空运按钮添加事件监听器
@@ -34,6 +36,7 @@ airButton.addEventListener('click', function () {
     toggleActiveState(airButton, oakButton, laButton, '空运货信息'); // 切换按钮的激活状态
     currentLocation = 'Air'
     fetchGoogleSheetData(airUrl); // 加载空运的数据
+    console.log(currentLocation);
 });
 
 //从google_sheet获取数据
@@ -439,18 +442,20 @@ function formatContainerData(button) {
     const sheetWindowName = 'GoogleSheetDataWindow';
     window.open('https://docs.google.com/spreadsheets/d/1p-lPEFgBeEfAOIpPDEcfnsu2MWj-x1ZCDkJD5_J6bxo/edit#gid=789142677', sheetWindowName);
 
+    console.log(currentLocation);
+
     if (currentLocation === 'Air') {
         console.log('空运');
         console.log(container);
         for (let i = 0; i < 25; i++) {
-            let unloadingPlace = container[`送货地址${i+1}`];
+            let unloadingPlace = container[`送货地址${i + 1}`];
             let boardNumber;
 
 
             // 卸货地0使用"板数"，卸货地1使用"板数1"
             if (i === 0) {
                 boardNumber = container["板数"] || '';
-            }  else { // 卸货地3及之后使用 "#1", "#2", ...
+            } else { // 卸货地3及之后使用 "#1", "#2", ...
                 boardNumber = container[`板数${i}`] || '';
             }
 
@@ -553,7 +558,7 @@ function formatContainerData(button) {
             destinations: destinations
         };
     }
-    
+
     console.log(formatData);
 
     data = formatData;
@@ -571,7 +576,10 @@ var data = {}
 function sendDataToGoogleSheet() {
 
     console.log(data);
-    if (currentLocation === 'OAK' || 'Air') {
+    console.log(currentLocation === ('OAK' || 'Air'));
+    console.log(currentLocation === 'LA');
+    if (currentLocation === ('OAK' || 'Air')) {
+        console.log('in oak:' + currentLocation);
         fetch(savingDataUrl, {
             method: 'POST',
             contentType: 'application/json',
@@ -581,6 +589,7 @@ function sendDataToGoogleSheet() {
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
     } else if (currentLocation === 'LA') {
+        console.log('in la:' + currentLocation);
         fetch(savingLADataUrl, {
             method: 'POST',
             contentType: 'application/json',
