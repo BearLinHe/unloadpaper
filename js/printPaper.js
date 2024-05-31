@@ -462,7 +462,7 @@ function formatContainerData(button) {
             if (unloadingPlace) {
                 unloadingPlace = unloadingPlace.toString().trim();
 
-                const inputElement = document.querySelector(`input[data-container="${container.container}"][data-boardnumber-index="${i}"]`);
+                const inputElement = document.querySelector(`input[data-container="${container.airwaybill}"][data-boardnumber-index="${i}"]`);
                 warehouses.push(`${unloadingPlace}`);
                 boardNumber = boardNumber ? boardNumber : inputElement.value;
                 palletNumbers.push(`${boardNumber}`);
@@ -578,7 +578,7 @@ function sendDataToGoogleSheet() {
     console.log(data);
     console.log(currentLocation === ('OAK' || 'Air'));
     console.log(currentLocation === 'LA');
-    if (currentLocation === ('OAK' || 'Air')) {
+    if (currentLocation === 'OAK' || currentLocation === 'Air') {
         console.log('in oak:' + currentLocation);
         fetch(savingDataUrl, {
             method: 'POST',
