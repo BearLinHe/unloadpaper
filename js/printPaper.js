@@ -462,7 +462,7 @@ function formatContainerData(button) {
             if (unloadingPlace) {
                 unloadingPlace = unloadingPlace.toString().trim();
 
-                const inputElement = document.querySelector(`input[data-container="${container.airwaybill}"][data-boardnumber-index="${i}"]`);
+                const inputElement = document.querySelector(`input[data-container="${airwaybill.airwaybill}"][data-boardnumber-index="${i}"]`);
                 warehouses.push(`${unloadingPlace}`);
                 boardNumber = boardNumber ? boardNumber : inputElement.value;
                 palletNumbers.push(`${boardNumber}`);
