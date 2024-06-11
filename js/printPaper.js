@@ -234,23 +234,43 @@ function displayData(data) {
 
 // 查找数据 根据柜号查找  支持只输入柜号尾号
 function searchData() {
+    console.log('searchData:' + currentLocation);
+
     var keyword = document.getElementById('searchInput').value.trim(); // 获取搜索关键词
     // 根据关键词过滤数据
-    filteredData = globalSheetData.filter(item => {
-        const container = `${item.container}`; // 使用模板字符串确保container是字符串
-        return keyword === '' || container.endsWith(keyword);
-    });
+    if (currentLocation === 'Air') {
+        filteredData = globalSheetData.filter(item => {
+            const airwaybill = `${item.airwaybill}`; // 使用模板字符串确保container是字符串
+            return keyword === '' || airwaybill.endsWith(keyword);
+        });
+    } else {
+        filteredData = globalSheetData.filter(item => {
+            const container = `${item.container}`; // 使用模板字符串确保container是字符串
+            return keyword === '' || container.endsWith(keyword);
+        });
+    }
+    
 
     displayData(filteredData); // 显示搜索结果
 }
 // 查找数据 根据拆柜日期筛选
 function filterByDate() {
     const selectedDate = document.getElementById('dateFilter').value;
-    // 根据选定的日期过滤数据
-    filteredData = globalSheetData.filter(item => {
-        const itemDate = item.拆柜日期.substr(0, 10); // 假设拆柜日期格式为"YYYY-MM-DD"
-        return selectedDate === '' || itemDate === selectedDate;
-    });
+
+    if (currentLocation === 'Air') {
+        // 根据选定的日期过滤数据
+        filteredData = globalSheetData.filter(item => {
+            const itemDate = item.到仓日期.substr(0, 10); // 假设拆柜日期格式为"YYYY-MM-DD"
+            return selectedDate === '' || itemDate === selectedDate;
+        });
+    } else {
+        // 根据选定的日期过滤数据
+        filteredData = globalSheetData.filter(item => {
+            const itemDate = item.拆柜日期.substr(0, 10); // 假设拆柜日期格式为"YYYY-MM-DD"
+            return selectedDate === '' || itemDate === selectedDate;
+        });
+    }
+    
 
     displayData(filteredData); // 显示筛选结果
 }
@@ -462,7 +482,7 @@ function formatContainerData(button) {
             if (unloadingPlace) {
                 unloadingPlace = unloadingPlace.toString().trim();
 
-                const inputElement = document.querySelector(`input[data-container="${airwaybill.airwaybill}"][data-boardnumber-index="${i}"]`);
+                const inputElement = document.querySelector(`input[data-container="${container.airwaybill}"][data-boardnumber-index="${i}"]`);
                 warehouses.push(`${unloadingPlace}`);
                 boardNumber = boardNumber ? boardNumber : inputElement.value;
                 palletNumbers.push(`${boardNumber}`);
