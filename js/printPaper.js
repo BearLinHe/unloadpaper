@@ -249,7 +249,7 @@ function searchData() {
             return keyword === '' || container.endsWith(keyword);
         });
     }
-    
+
 
     displayData(filteredData); // 显示搜索结果
 }
@@ -270,7 +270,7 @@ function filterByDate() {
             return selectedDate === '' || itemDate === selectedDate;
         });
     }
-    
+
 
     displayData(filteredData); // 显示筛选结果
 }
@@ -314,6 +314,7 @@ function formatContainerData(button) {
     ];
 
     const LAWarehouses = [
+        "DEN8",
         "GYR2",
         "GYR3",
         "KRB1",
@@ -456,7 +457,17 @@ function formatContainerData(button) {
         "DFW2n",
         "RFD2",
         "RFD1",
+        "AMA1",
+        "MDW9",
     ];
+
+    const ExpressWareHouses = [
+        "UPS",
+        "Fedex",
+        "FEDEX",
+        "fedex",
+    ];
+
 
     // 尝试打开或复用Google Sheets文档窗口
     const sheetWindowName = 'GoogleSheetDataWindow';
@@ -532,11 +543,18 @@ function formatContainerData(button) {
 
                 // 先判断仓号是否为东部仓库
                 let isEastWarehouse = EastWarehouses.some(eastWarehouse => unloadingPlace.includes(eastWarehouse));
-                if (isEastWarehouse) {
-                    palletHeights.push(`less than 75''`);
+                // 目的地判断
+                let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+                let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+                let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
+                let isExpress = ExpressWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
+                let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
+                if (isEastWarehouse || isLA) {
+                    palletHeights.push(`less than 100''`);
+                } else if (isWendy || isExpress) {
+                    palletHeights.push(`less than 90''`);
                 } else {
                     // 再判断仓号是否为特殊仓库
-                    let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
                     if (isSpecialWarehouse) {
                         palletHeights.push(`less than 72''`);
                     } else {
@@ -544,10 +562,10 @@ function formatContainerData(button) {
                     }
                 }
 
-                // 目的地判断
-                let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
-                let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
-                let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
+                // // 目的地判断
+                // let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+                // let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
+                // let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
 
                 if (isLA) {
                     destinations.push("LA");
@@ -556,7 +574,9 @@ function formatContainerData(button) {
                 } else if (isEastWarehouse) {
                     destinations.push("美东");
                 } else if (isWendy) {
-                    destinations.push("Wendy");
+                    destinations.push("美中");
+                } else if (isExpress) {
+                    destinations.push("快递");
                 } else {
                     destinations.push("N/A");
                 }
