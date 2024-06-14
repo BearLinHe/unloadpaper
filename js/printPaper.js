@@ -459,6 +459,7 @@ function formatContainerData(button) {
         "RFD1",
         "AMA1",
         "MDW9",
+        "HSV2",
     ];
 
     const ExpressWareHouses = [
