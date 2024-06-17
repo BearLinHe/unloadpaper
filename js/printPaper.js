@@ -309,8 +309,14 @@ function formatContainerData(button) {
         "SCK1",
         "SCK4",
         "SMF3",
-        "SMF6",
         "LAS1"
+    ];
+
+    const selfPickWarehouses = [
+        "SMF6",
+        "OAK3",
+        "MCE1",
+        "FAT2"
     ];
 
     const LAWarehouses = [
@@ -412,6 +418,7 @@ function formatContainerData(button) {
     ];
 
     const WendyWareHouses = [
+        "HOU7",
         "BNA2",
         "BFI3",
         "CHA2",
@@ -542,31 +549,25 @@ function formatContainerData(button) {
                 boardNumber = boardNumber ? boardNumber : inputElement.value;
                 palletNumbers.push(`${boardNumber}`);
 
-                // 先判断仓号是否为东部仓库
+                // 先判断仓号目的地种类
                 let isEastWarehouse = EastWarehouses.some(eastWarehouse => unloadingPlace.includes(eastWarehouse));
-                // 目的地判断
                 let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
                 let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
                 let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
                 let isExpress = ExpressWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
                 let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
+                let isSelfPick = selfPickWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
                 if (isEastWarehouse || isLA) {
                     palletHeights.push(`less than 100''`);
                 } else if (isWendy || isExpress) {
                     palletHeights.push(`less than 90''`);
+                } else if (isSelfPick) {
+                    palletHeights.push(`less than 80 - 85''`);
+                } else if (isSpecialWarehouse) {
+                    palletHeights.push(`less than 72''`);
                 } else {
-                    // 再判断仓号是否为特殊仓库
-                    if (isSpecialWarehouse) {
-                        palletHeights.push(`less than 72''`);
-                    } else {
-                        palletHeights.push(`less than 75''`);
-                    }
+                    palletHeights.push(`less than 75''`);
                 }
-
-                // // 目的地判断
-                // let isLA = LAWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
-                // let isBayArea = BayAreaWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
-                // let isWendy = WendyWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
 
                 if (isLA) {
                     destinations.push("LA");
