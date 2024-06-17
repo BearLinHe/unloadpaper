@@ -557,8 +557,10 @@ function formatContainerData(button) {
                 let isExpress = ExpressWareHouses.some(warehouse => unloadingPlace.includes(warehouse));
                 let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
                 let isSelfPick = selfPickWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
-                if (isEastWarehouse || isLA) {
-                    palletHeights.push(`less than 100''`);
+                if (isEastWarehouse) {
+                    palletHeights.push(`less than 95''`);
+                } else if (isLA) {
+                    palletHeights.push(`less than 90''`)
                 } else if (isWendy || isExpress) {
                     palletHeights.push(`less than 90''`);
                 } else if (isSelfPick) {
