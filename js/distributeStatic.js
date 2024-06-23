@@ -56,8 +56,8 @@ function displayData(data) {
             count++;
             var row = document.createElement('tr');
             row.innerHTML = `
-            <th style="vertical-align: middle;" scope="row">${index}</th>
-            <td style="vertical-align: middle;">${data.日期}</td>
+            <th style="vertical-align: middle;" scope="row">${index+1}</th>
+            <td style="vertical-align: middle;">${data.日期.substr(0,10)}</td>
             <td style="vertical-align: middle;">${data.备注}</td>
             <td style="vertical-align: middle;">${data.柜号}</td>
             <td style="vertical-align: middle;">
@@ -75,7 +75,7 @@ function displayData(data) {
                 `<div class="detail-row">
                             <p class="mb-2 d-flex align-items-center">
                                 <span class="me-3">${data.司机安排}</span>
-                                <span class="me-3">${data.送货地址}板</span>
+                                <span class="me-3">${data.送货地址}</span>
                             </p>
                         </div>`;
 
@@ -90,30 +90,7 @@ function displayData(data) {
     loadingCount.textContent = count;
 }
 
-//填充仓号的 <datalist>
-// function populateWarehouseOptions(data) {
-//     const warehouseOptionsSet = new Set();
 
-//     data.forEach(data => {
-
-//         let destination = data[`送仓地址`];
-
-//         if (typeof destination === 'string') {
-//             destination = destination.trim().substring(0, 5);
-//             console.log(destination);
-//             warehouseOptionsSet.add(destination);
-//         }
-
-//     });
-
-//     const warehouseList = document.getElementById('warehouseList');
-//     warehouseList.innerHTML = ''; // 清空现有选项
-//     warehouseOptionsSet.forEach(warehouse => {
-//         const option = document.createElement('option');
-//         option.value = warehouse;
-//         warehouseList.appendChild(option);
-//     });
-// }
 
 
 function filterData() {
@@ -152,7 +129,7 @@ function filterData() {
             if (typeof dateString === 'string') {
                 const date = new Date(dateString.substr(0, 10));
                 // 确保ETA日期在今天和所选日期之间
-                return date >= selectedStartDate && date < selectedEndDate;
+                return date >= selectedStartDate && date <= selectedEndDate;
             }
             
             
