@@ -17,6 +17,11 @@ document.getElementById('linkunloadingPaper').addEventListener('click', function
     loadContent('../html/unloadingPaper.html');
 });
 
+document.getElementById('linkDestinationStatic').addEventListener('click', function (e) {
+    e.preventDefault();
+    loadContent('../html/destinationStatic.html');
+});
+
 function loadContent(page) {
     document.getElementById('content').innerHTML = '<object type="text/html" data="' + page + '" style="width:100%; height:100%;" ></object>';
 }
