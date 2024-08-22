@@ -564,7 +564,7 @@ function formatContainerData(button) {
                 } else if (isWendy || isExpress) {
                     palletHeights.push(`less than 90''`);
                 } else if (isSelfPick) {
-                    palletHeights.push(`less than 80 - 85''`);
+                    palletHeights.push(`less than 85 - 90''`);
                 } else if (isSpecialWarehouse) {
                     palletHeights.push(`less than 75''`);
                 } else {
