@@ -558,17 +558,17 @@ function formatContainerData(button) {
                 let isSpecialWarehouse = specialWarehouses.some(specialWarehouse => unloadingPlace.includes(specialWarehouse));
                 let isSelfPick = selfPickWarehouses.some(warehouse => unloadingPlace.includes(warehouse));
                 if (isEastWarehouse) {
-                    palletHeights.push(`less than 90 - 100''`);
+                    palletHeights.push(`less than 90 - 95''`);
                 } else if (isLA) {
                     palletHeights.push(`less than 90''`)
                 } else if (isWendy || isExpress) {
                     palletHeights.push(`less than 90''`);
                 } else if (isSelfPick) {
-                    palletHeights.push(`less than 90 - 100''`);
+                    palletHeights.push(`less than 90 - 95''`);
                 } else if (isSpecialWarehouse) {
-                    palletHeights.push(`less than 90 - 100''`);
+                    palletHeights.push(`less than 90 - 95''`);
                 } else {
-                    palletHeights.push(`less than 90 - 100''`);
+                    palletHeights.push(`less than 90 - 95''`);
                 }
 
                 if (isLA) {
