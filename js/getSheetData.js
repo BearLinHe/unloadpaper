@@ -144,14 +144,13 @@ function populateWarehouseOptions(data) {
     const warehouseOptionsSet = new Set();
 
     data.forEach(container => {
-        for (let i = 0; i < 10; i++) {
-            let unloadingPlace = container[`卸货地${i}`];
-            // 确保unloadingPlace是一个字符串
-            if (typeof unloadingPlace === 'string') {
-                unloadingPlace = unloadingPlace.trim();
-                warehouseOptionsSet.add(unloadingPlace);
-            }
-        }
+        
+        let unloadingPlace = container[`卸货地${i}`];
+        // 确保unloadingPlace是一个字符串
+        if (typeof unloadingPlace === 'string') {
+            unloadingPlace = unloadingPlace.trim();
+            warehouseOptionsSet.add(unloadingPlace);
+        } 
     });
 
     const warehouseList = document.getElementById('warehouseList');
