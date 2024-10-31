@@ -1,24 +1,78 @@
 .input-style {
+    width: 150px;
+        /* 根据内容自动调整宽度 */
     border: none;
     /* 移除边框 */
     background-color: transparent;
     /* 透明背景 */
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
     /* 字体大小 */
     color: inherit;
     /* 继承文字颜色 */
     outline: none;
     /* 移除聚焦时的轮廓 */
-    height: 20px;
+    /* height: 20px; */
+    font-family: Amazon Ember;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #002F36;    
 }
 
-.text-right{
+
+.input-style-large {
+    width: 200px;
+    /* 根据内容自动调整宽度 */
+    border: none;
+    /* 移除边框 */
+    background-color: transparent;
+    /* 透明背景 */
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 40px;
+    /* 字体大小 */
+    color: inherit;
+    /* 继承文字颜色 */
+    outline: none;
+    /* 移除聚焦时的轮廓 */
+    /* height: 20px; */
+    font-family: Amazon Ember;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #002F36;
+}
+
+/* .text-right{
     text-align: right !important;
+} */
+
+
+.textarea-style {
+    resize: none;
+    /* 禁用用户手动调整大小 */
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #002F36;
+    font-family: "Amazon Ember", sans-serif;
+    letter-spacing: 0px;
+    text-align: left;
+    overflow-wrap: break-word;
+    border: none;
+    /* 移除边框 */
+    background-color: transparent;
+    overflow: hidden;
+        /* 隐藏滚动条 */
 }
 
 .text-center{
     text-align: center !important;
+}
+
+
+.text-gray{
+    color: #667575 !important
 }
 
 .modal {

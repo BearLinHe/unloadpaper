@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('carpApp').service('AccountService', function (UtilService) {
-    this.validateOnboardingInfo = function ( onboardingInfo, isTransportationIdRequired, accountAlreadyExists, isSmallParcelCarrierAllowed ) {
+    this.validateOnboardingInfo = function ( onboardingInfo, isTransportationIdRequired, accountAlreadyExists, isSmallParcelCarrierAllowed, isJPAccountRequestValidationRequired ) {
         var errorMessages = [];
         if ( !accountAlreadyExists  ) {
             if ( UtilService.isEmpty( onboardingInfo.companyCode ) ) {
@@ -53,6 +53,11 @@ angular.module('carpApp').service('AccountService', function (UtilService) {
         if ( isTransportationIdRequired ) {
             if ( UtilService.isEmpty( onboardingInfo.transportationIdValue ) ) {
                 errorMessages.push( $('#transportation_id_empty').text() );
+            }
+        }
+        if ( isJPAccountRequestValidationRequired ) {
+            if ( UtilService.isEmpty( onboardingInfo.jpAccountRequestValidationIdValue ) ) {
+                errorMessages.push( $('#jp_account_request_validation_empty').text() );
             }
         }
         return errorMessages.join('\n');

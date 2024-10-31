@@ -83,9 +83,42 @@ function populateTable() {
             <td class="a-text-center"><span>${item.unitCount}</span></td>
             <td class="a-text-center"><span>${item.poList}</span></td>
         `;
+
+
+
+        row.innerHTML = `
+            <tr data-ng-repeat="entry in apptJsObject.shipments track by $index"
+                class="ng-scope">
+                <td class="a-text-left ng-binding">${item.id}</td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.ARN}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.refNumber}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.bolNumber}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.vendorName}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.palletCount}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.cartonCount}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.unitCount}</div>
+                </td>
+                <td class="a-text-left">
+                    <div class="view-format4 ng-binding">${item.poList}</div>
+                </td>
+            </tr>`
         tableBody.appendChild(row); // 将新行添加到表格体中
     });
 }
 
 // 假设页面加载后执行populateTable
 document.addEventListener('DOMContentLoaded', populateTable);
+
