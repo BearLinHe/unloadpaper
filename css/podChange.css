@@ -63,6 +63,7 @@
     /* 移除边框 */
     background-color: transparent;
     overflow: hidden;
+    width: 100px;
         /* 隐藏滚动条 */
 }
 
