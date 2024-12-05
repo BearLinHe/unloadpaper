@@ -303,6 +303,7 @@ function formatContainerData(button) {
     let palletNumbers = [];
     let palletHeights = [];
     let destinations = [];
+    let holds = [];
 
 
     const specialWarehouses = [
@@ -528,7 +529,7 @@ function formatContainerData(button) {
         for (let i = 0; i < 25; i++) {
             let unloadingPlace = container[`卸货地${i}`];
             let boardNumber;
-
+            let hold = /hold|扣/i.test(unloadingPlace) ? "扣货" : container.客户;
 
             // 卸货地0使用"板数"，卸货地1使用"板数1"
             if (i === 0) {
@@ -548,6 +549,7 @@ function formatContainerData(button) {
                 warehouses.push(`${unloadingPlace}`);
                 boardNumber = boardNumber ? boardNumber : inputElement.value;
                 palletNumbers.push(`${boardNumber}`);
+                holds.push(hold);
 
                 // 先判断仓号目的地种类
                 let isEastWarehouse = EastWarehouses.some(eastWarehouse => unloadingPlace.includes(eastWarehouse));
@@ -591,6 +593,7 @@ function formatContainerData(button) {
         }
         console.log(warehouses);
         console.log(palletNumbers);
+        console.log(holds);
         console.log(destinations);
         formatData = {
             containerNumber: container.container,
@@ -599,7 +602,8 @@ function formatContainerData(button) {
             warehouses: warehouses,
             palletNumbers: palletNumbers,
             palletHeights: palletHeights,
-            destinations: destinations
+            destinations: destinations,
+            hold: holds,
         };
     }
 
@@ -610,7 +614,7 @@ function formatContainerData(button) {
     sendDataToGoogleSheet();
 
     for (let i = 0; i < 25; i++) {
-        generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.clientName, formatData.unloadingDate, formatData.palletNumbers[i]);
+        generatePDF(formatData.containerNumber, formatData.warehouses[i], formatData.hold[i], formatData.unloadingDate, formatData.palletNumbers[i]);
     }
 
 }
