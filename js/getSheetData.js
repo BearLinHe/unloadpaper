@@ -34,7 +34,7 @@ laButton.addEventListener('click', function () {
 
 
 //从google_sheet获取数据
-const oakUrl = 'https://script.google.com/macros/s/AKfycbyrAdT_SkCI7o6DCKrwzRf7asPUpjMbAzso8lYZvgTpYbwsJgoHdXRLsblMMmG4CU4/exec'; // 替换为你的Apps Script Web应用URL
+const oakUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=qTUNWcW-kUMe0mernC6Gjz3pNlSDOoEVEF-JYZckM3X1kR0SpCd8G8GSQVtleib3K4nIKudUf09v1Lc69g6EnofY0XAaNgcdm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnBxLWySmGF6Ea8nB6Xz6PiQ3nblMox2V4IXu78pwUflT6NTgYO1qe_n_hXnRaaR8vxfFzSSRKucl_-KCZ1sdTf1gwxHrzyVyMtz9Jw9Md8uu&lib=MyXw4uO2J1I5_nuLV4jQPCCV9zgDwzn27'; // 替换为你的Apps Script Web应用URL
 const laUrl = 'https://script.google.com/macros/s/AKfycbzQPKNZx1JcbhfBYlTKiBaI49s1KJAk3007KJPbQV7JjVUsVOijPqzCWMCn5HxIthVJ/exec'
 
 async function fetchGoogleSheetData(url) {
@@ -144,13 +144,13 @@ function populateWarehouseOptions(data) {
     const warehouseOptionsSet = new Set();
 
     data.forEach(container => {
-        
+
         let unloadingPlace = container[`卸货地${i}`];
         // 确保unloadingPlace是一个字符串
         if (typeof unloadingPlace === 'string') {
             unloadingPlace = unloadingPlace.trim();
             warehouseOptionsSet.add(unloadingPlace);
-        } 
+        }
     });
 
     const warehouseList = document.getElementById('warehouseList');
