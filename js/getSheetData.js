@@ -90,7 +90,7 @@ function displayData(data) {
                     <div class="card card-body bg-dark-subtle">`;
 
             // 遍历所有可能的卸货地和对应的板数或#
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 25; i++) {
                 let unloadingPlace = container[`卸货地${i}`]; // 当前卸货地
                 let boardNumber; // 用于存储当前卸货地的板数或#
                 let date;
@@ -144,12 +144,13 @@ function populateWarehouseOptions(data) {
     const warehouseOptionsSet = new Set();
 
     data.forEach(container => {
-
-        let unloadingPlace = container[`卸货地${i}`];
-        // 确保unloadingPlace是一个字符串
-        if (typeof unloadingPlace === 'string') {
-            unloadingPlace = unloadingPlace.trim();
-            warehouseOptionsSet.add(unloadingPlace);
+        for (let i = 0; i < 25; i++) {
+            let unloadingPlace = container[`卸货地${i}`];
+            // 确保unloadingPlace是一个字符串
+            if (typeof unloadingPlace === 'string') {
+                unloadingPlace = unloadingPlace.trim();
+                warehouseOptionsSet.add(unloadingPlace);
+            }
         }
     });
 
@@ -254,7 +255,7 @@ document.getElementById('calculateButton30').addEventListener('click', function 
     displayResults(groups);
 });
 
-document.getElementById('calculateButton28').addEventListener('click', function () {
+document.getElementById('calculateButton34').addEventListener('click', function () {
     const selectedContainers = [];
     document.querySelectorAll('.detail-row input[type="checkbox"]:checked').forEach(checkbox => {
         const container = checkbox.getAttribute('data-container');
@@ -265,7 +266,7 @@ document.getElementById('calculateButton28').addEventListener('click', function 
 
     // 执行您的计算逻辑，这里是个示例
     console.log(selectedContainers);
-    let groups = allocateContainers(selectedContainers, 28);
+    let groups = allocateContainers(selectedContainers, 34);
 
     displayResults(groups);
 });
