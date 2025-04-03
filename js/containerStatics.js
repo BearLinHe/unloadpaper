@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 //从google_sheet获取数据  奥克兰调度表yg2024的数据
-const oakUrl = 'https://script.google.com/macros/s/AKfycbza6DliZ7YkvjQdrPv22fmtMNu7gVUm9CK3Qrn8lowDqhSRqT1xEmzJoMVmdCVMedId2w/exec'; // 替换为你的Apps Script Web应用URL
+const oakUrl = 'https://script.google.com/macros/s/AKfycbwjCTMK_AgsZ_pF2Wst-toewOHv_7mDiQFCuIa-FqsFeb5fakz5mXXPvSrsyYSMyv2wvw/exec'; // 替换为你的Apps Script Web应用URL
 
 //抓取调度表的json数据
 async function fetchGoogleSheetData(url) {
