@@ -266,7 +266,7 @@ function filterByDate() {
     } else {
         // 根据选定的日期过滤数据
         filteredData = globalSheetData.filter(item => {
-            const itemDate = item.拆柜日期.substr(0, 10); // 假设拆柜日期格式为"YYYY-MM-DD"
+            const itemDate = String(item.拆柜日期 || '').substring(0, 10);
             return selectedDate === '' || itemDate === selectedDate;
         });
     }
