@@ -27,6 +27,11 @@ document.getElementById('linkDestinationStatic').addEventListener('click', funct
     loadContent('../html/destinationStatic.html');
 });
 
+document.getElementById('linkGenerateQRCode').addEventListener('click', function (e) {
+    e.preventDefault();
+    loadContent('../html/generateQRCode.html');
+});
+
 function loadContent(page) {
     document.getElementById('content').innerHTML = '<object type="text/html" data="' + page + '" style="width:100%; height:100%;" ></object>';
 }
