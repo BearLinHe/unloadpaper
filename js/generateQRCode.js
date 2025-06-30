@@ -61,12 +61,19 @@ function displayData(data) {
             else boardNumber = container[`#${i - 2}`] || '';
 
             if (unloadingPlace) {
+                const cleanedPlace = cleanWarehouseName(unloadingPlace);
                 validUnloadingPlacesCount++;
                 collapseDetailContent += `
                     <div class="detail-row d-flex align-items-center mb-2">
                         <span class="me-3">${unloadingPlace}</span>
                         <span class="me-3">${boardNumber}板</span>
-                        <button class="btn btn-sm btn-success" onclick="generateQRCodes('${container.container}', '${unloadingPlace}', '${String(container.拆柜日期 || '').substring(0, 10)}', ${i}, ${parseInt(boardNumber) || 0})">打印二维码</button>
+                        <button class="btn btn-sm btn-success" onclick="generateQRCodes(
+                            '${container.container}', 
+                            '${cleanedPlace}', 
+                            '${String(container.拆柜日期 || '').substring(0, 10)}', 
+                            ${i}, 
+                            ${parseInt(boardNumber) || 0}
+                        )">打印二维码</button>
                     </div>
                 `;
             }
@@ -107,30 +114,50 @@ function filterByDate() {
     displayData(filteredData); // 显示筛选结果
 }
 
+function cleanWarehouseName(str) {
+    return String(str).replace(/\s*\d{1,2}\/\d{1,2}/g, '').trim();
+  }
+
+function sanitizeFileName(str) {
+    return String(str).replace(/[\/\\:*?"<>|\n\r\t]/g, '_').trim();
+}
+
+function removeDateLikePart(str) {
+    // 删除所有形如“数字/数字”的片段（包括前面的空格）
+    return String(str).replace(/\s*\d{1,2}\/\d{1,2}/g, '').trim();
+}
 
 async function generateQRCodes(container, warehouse, date, index, boardCount) {
-    const folderName = `${container}_${warehouse}`;
+    const cleanedWarehouse = removeDateLikePart(warehouse);
+    console.log(cleanedWarehouse);
+
+    const cleanWarehouseForFile = sanitizeFileName(cleanedWarehouse);
+    const folderName = `${sanitizeFileName(container)}-${cleanWarehouseForFile}`;
     const zip = new JSZip();
 
     for (let j = 0; j < boardCount; j++) {
-        const uid = `${folderName}_${index + 1}_${j + 1}`;
-        const qrData = { uid, container, warehouse, date };
+        const uid = `${folderName}-${j + 1}`;
+
+        const qrData = {
+            uid,
+            container,
+            warehouse: cleanedWarehouse, // 用清理后的 warehouse
+            date: String(date)
+        };
 
         const canvas = document.createElement('canvas');
         await QRCode.toCanvas(canvas, JSON.stringify(qrData));
 
         const dataUrl = canvas.toDataURL('image/png');
-        const base64Data = dataUrl.split(',')[1]; // 去掉 data:image 部分
+        const base64Data = dataUrl.split(',')[1];
 
         zip.file(`${uid}.png`, base64Data, { base64: true });
     }
 
-    // 生成 ZIP 并触发下载
-    zip.generateAsync({ type: 'blob' }).then(function (content) {
-        const zipName = `${folderName}.zip`;
+    zip.generateAsync({ type: 'blob' }).then(content => {
         const link = document.createElement('a');
         link.href = URL.createObjectURL(content);
-        link.download = zipName;
+        link.download = `${folderName}.zip`;
         link.click();
     });
-}
+  }

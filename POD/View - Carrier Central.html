@@ -172,7 +172,7 @@
                         <div class="a-box a-alert a-alert-info" aria-live="polite" aria-atomic="true">
                             <div class="a-box-inner a-alert-container">
                                 <h4 class="a-alert-heading" aria-level="5">Appointment Disclaimer</h4><i
-                                    class="a-icon a-icon-alert"></i>
+                                    class="a-icon a-icon-alert" aria-hidden="true"></i>
                                 <div class="a-alert-content">
                                     <div class="view-format4">This document serves only as a confirmation that the
                                         shipment described above from the carrier is now in the possession of Amazon.
@@ -285,8 +285,18 @@
                                                     </div>
                                                     <div class="a-row">
                                                     </div>
+                                                
                                                 </div>
-
+                                                <div class="a-column a-span12">
+                                                    <!-- ngIf: configuration.enableProofOfDelivery -->
+                                                    <div data-ng-if="configuration.enableProofOfDelivery" class="a-row a-spacing-large ng-scope">
+                                                        <div class="view-format2">Proof of Delivery</div>
+                                                        <!-- ngIf: false -->
+                                                        <!-- ngIf: true -->
+                                                        <div class="view-format4 ng-scope" data-ng-if="true">
+                                                            Proof Of Delivery document not found
+                                                        </div><!-- end ngIf: true -->
+                                                    </div><!-- end ngIf: configuration.enableProofOfDelivery -->  </div>
                                             </div>
                                         </div>
 
@@ -312,14 +322,7 @@
                                                     <textarea id="autoWrapTextarea" class="textarea-style" oninput="autoWrap()" rows="2" cols="9">11/01/2024 10:51 EDT</textarea>
                                                 </div>
                                             </div>
-                                            <div class="a-row a-spacing-base">
-                                                <div class="a-column a-span5">
-                                                    <div class="view-format4">Unloaded</div>
-                                                </div>
-                                                <div class="a-column a-span5">
-                                                    <div class="view-format4"></div>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="a-row a-spacing-base">
                                                 <div class="a-column a-span5">
                                                     <div class="view-format4">Completed</div>
