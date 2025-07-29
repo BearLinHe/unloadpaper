@@ -27,6 +27,11 @@ document.getElementById('linkDestinationStatic').addEventListener('click', funct
     loadContent('../html/destinationStatic.html');
 });
 
+document.getElementById('latestLabelPrinter').addEventListener('click', function (e) {
+    e.preventDefault();
+    loadContent('../html/latest-labelprinter.html');
+});
+
 document.getElementById('linkGenerateQRCode').addEventListener('click', function (e) {
     e.preventDefault();
     loadContent('../html/generateQRCode.html');
