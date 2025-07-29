@@ -52,19 +52,19 @@
     </div>
 
     <script>
-        const jsonURL = 'https://script.google.com/macros/s/AKfycbwGKs0QNbio4w4ZcwikY8xx5Vc5IIr9jd73C3eGJHCdHpSFFS6m0uJopTcg1teEB4JM/exec';  // 替换成你自己的
+        const jsonURL = 'https://script.google.com/macros/s/AKfycbzvRpeW5N_Mu19KwjPu0xDxibnXob3aalk9ThARdKJ4xcxGPJSvDk8O37XPJTBsy4G3/exec';  // 替换成你自己的
 
         async function fetchAndPrint() {
             const response = await fetch(jsonURL);
             const data = await response.json();
 
-            const { container, customer, date, locations } = data;
+            const { container, customer, date, locations, pallets } = data;
 
             // 显示当前柜号
             document.getElementById('currentContainer').innerText = `当前打印柜号：${container}`;
 
             for (let i = 0; i < locations.length; i++) {
-                generatePDF(container, locations[i], customer, date.substr(0, 9), 1);
+                generatePDF(container, locations[i], customer, date.substr(0, 9), pallets[i]);
                 await new Promise(resolve => setTimeout(resolve, 500));  // 避免浏览器拦截多个窗口
             }
         }
