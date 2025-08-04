@@ -204,6 +204,13 @@
                             <div class="view-format4 ng-binding">Closed</div>
                         </div>
                         <div class="a-column a-span2">
+                            <!-- ngIf: true == true -->
+                            <div data-ng-if="true == true" class="ng-scope">
+                                <div class="view-format2">Earliest Arrival Time</div>
+                                <div class="view-format4">Not available</div>
+                            </div><!-- end ngIf: true == true -->
+                        </div>
+                        <div class="a-column a-span2 a-span-last">
                             <div data-ng-if="apptJsObject.arrivalTime != null &amp;&amp; apptJsObject.arrivalTime.length !== 0"
                                 class="ng-scope">
                                 <div class="view-format2">Arrival Time</div>
