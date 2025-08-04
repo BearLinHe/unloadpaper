@@ -64,7 +64,7 @@
             document.getElementById('currentContainer').innerText = `当前打印柜号：${container}`;
 
             for (let i = 0; i < locations.length; i++) {
-                generatePDF(container, locations[i], customer, date.substr(0, 9), pallets[i]);
+                generatePDF(container, locations[i], customer, date.substr(0, 10), pallets[i]);
                 await new Promise(resolve => setTimeout(resolve, 500));  // 避免浏览器拦截多个窗口
             }
         }
